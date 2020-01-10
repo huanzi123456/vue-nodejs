@@ -20,16 +20,54 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+
+                <el-form-item label="难度">
+                    <el-rate style="margin-top:0.7rem" :max="10" show-score v-model="model.scores.difficult"></el-rate>
+                </el-form-item>
+                <el-form-item label="技能">
+                    <el-rate style="margin-top:0.7rem" :max="10" show-score v-model="model.scores.skills"></el-rate>
+                </el-form-item>
+                <el-form-item label="攻击">
+                    <el-rate style="margin-top:0.7rem" :max="10" show-score v-model="model.scores.attack"></el-rate>
+                </el-form-item>
+                <el-form-item label="生存">
+                    <el-rate style="margin-top:0.7rem" :max="10" show-score v-model="model.scores.survive"></el-rate>
+                </el-form-item>
+
                 <el-form-item label="头像">
                     <el-upload
                         class="avatar-uploader"
-                         :action= " $http.defaults.baseURL + '/upload'"
+                        :action= "$http.defaults.baseURL + '/upload'"
                         :show-file-list="false"
                         :on-success="afterUpload">  
-                        <img v-if="model.avater" :src="model.avater" class="avatar">
+                        <img v-if="model.avatar" :src="model.avatar" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
+
+                <el-form-item label="顺风出装">
+                    <el-select v-model = "model.items1" multiple>
+                        <el-option v-for="item of items" :key="item._id" :label="item.name" :value="item._id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="逆风出装">
+                    <el-select v-model = "model.items2" multiple>
+                        <el-option v-for="item of items" :key="item._id" :label="item.name" :value="item._id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="使用技巧">
+                    <el-input type="textarea" v-model="model.usageTips"></el-input>
+                </el-form-item>
+                <el-form-item label="对抗技巧">
+                    <el-input type="textarea" v-model="model.battleTips"></el-input>
+                </el-form-item>
+                <el-form-item label="团战思路">
+                    <el-input type="textarea" v-model="model.teamTips"></el-input>
+                </el-form-item>
+
                 <el-form-item>
                     <el-button type = "primary" native-type ="submit">保存</el-button>
                 </el-form-item>
@@ -44,18 +82,19 @@ export default {
     },
     data(){
         return {
+            items:[],
             categories:[],
             model: {
                 name:'',
-                avater:''
+                avatar:'',
+                scores: {},
             },
         }
     },
     methods:{
         afterUpload(res){
             //model一开始不存在,可以使用set语法显示赋值
-            
-            this.model.icon = res.url
+            this.model.avatar = res.url
         },
         async save(){
             //请求
@@ -73,14 +112,22 @@ export default {
         },
         async fetch(){
             const res = await this.$http.get(`rest/heroes/${this.id}`)
-            this.model =res.data
+            // this.model =res.data 
+            this.model =Object.assign({},this.model,res.data)   //保持model的数据模型
+        },
+        //获取顺风出装
+        async fetchItems(){
+            const res = await this.$http.get(`rest/items`)
+            this.items =res.data 
+            // this.model =Object.assign({},this.model,res.data)   //保持model的数据模型
         },
         async fetchCategories(){
             const res = await this.$http.get(`rest/categories`)
-            this.categories =res.data
+            this.categories =res.data;
         },
     },
     created(){
+        this.fetchItems()
         this.fetchCategories()
         this.id && this.fetch()
     }
