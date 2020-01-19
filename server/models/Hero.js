@@ -4,6 +4,8 @@ const schema = new mongoose.Schema({
     name:{ type: String },
     title:{type : String},  //皮肤名称
     avatar:{type: String},  //ref id关联  更改之后 ,不用去修改数据库
+    banner:{type:String}, 
+
     categories:[{type: mongoose.SchemaTypes.ObjectId,ref: 'Category'}],
     scores:{
         difficult:{type: Number},
@@ -15,7 +17,9 @@ const schema = new mongoose.Schema({
         icon: {type:String},
         name: {type:String},
         description: {type:String},
-        tips:{type:String}
+        tips:{type:String},
+        delay:{type:String},  //冷却值
+        cost:{type:String},   //消耗
     }],
     // 顺风出装
     items1: [{type: mongoose.SchemaTypes.ObjectId,ref:'Item'}],
@@ -30,8 +34,8 @@ const schema = new mongoose.Schema({
     //最佳搭档
     partners:[{
         hero:{type: mongoose.SchemaTypes.ObjectId,ref:'Hero'},
-        deccription:{type: String},
+        description:{type: String},
     }]
 })
 // 导出mongoose的模型
-module.exports =mongoose.model('Hero',schema)
+module.exports =mongoose.model('Hero',schema,'heroes')

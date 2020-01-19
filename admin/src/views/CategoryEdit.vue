@@ -38,7 +38,7 @@ export default {
                  await this.$http.post("rest/categories",this.model)
             }
             //跳转到categorys
-            this.$router.push('categories/list')
+            this.$router.push('/categories/list')
             this.$message({
                 type: 'success',
                 message: '保存成功'

@@ -5,6 +5,8 @@ import router from './router'
 
 import http from './http'
 
+import './style.css'
+
 Vue.config.productionTip = false
 // 加载vue实例上
 Vue.prototype.$http =http

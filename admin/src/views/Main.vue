@@ -19,6 +19,18 @@
           <el-menu-item index="/heroes/create">新建英雄</el-menu-item>
           <el-menu-item index="/heroes/list">英雄列表</el-menu-item>
         </el-menu-item-group>
+
+        <el-menu-item-group>
+          <template slot="title">文章</template>
+          <el-menu-item index="/articles/create">新建文章</el-menu-item>
+          <el-menu-item index="/articles/list">文章列表</el-menu-item>
+        </el-menu-item-group>
+
+        <el-menu-item-group>
+          <template slot="title">广告位</template>
+          <el-menu-item index="/ads/create">新建广告位</el-menu-item>
+          <el-menu-item index="/ads/list">广告位列表</el-menu-item>
+        </el-menu-item-group>
       </el-submenu>
     </el-menu>
   </el-aside>
@@ -37,7 +49,9 @@
     </el-header>
     
     <el-main>
-        <router-view></router-view>
+
+        <!-- 创建页面与修改页面是同一个组件,需要区分使用路由的路径区分不同 -->
+        <router-view :key="$route.path"></router-view>
       <!-- <el-table :data="tableData">
         <el-table-column prop="date" label="日期" width="140">
         </el-table-column>
